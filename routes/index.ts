@@ -1,1 +1,1 @@
-module.exports.postsRouter = require('./postsRouter');
+export { router as postsRouter } from './postsRouter';
