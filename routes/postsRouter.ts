@@ -45,10 +45,10 @@ router.get('/:id', async (req, res) => {
     if (response !== undefined && response.length > 0) {
       res.status(200).json(response);
     } else {
-      res.status(404).end();
+      res.status(404).send(`no posts with the id ${id}`);
     }
   } catch (error) {
-    res.status(500).end();
+    res.status(500).end('error getting post');
   }
 });
 
@@ -140,7 +140,5 @@ router.post('/:id/comments', async (req, res) => {
     res.status(500).send(`error adding comment to id ${id}`);
   }
 });
-
-// module.exports = router;
 
 export default router;
