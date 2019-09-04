@@ -21,7 +21,6 @@
         "@typescript-eslint/eslint-plugin"
     ],
     "rules": {
-        "global-require": "off"
     },
     "settings": {
         "import/extensions": [
