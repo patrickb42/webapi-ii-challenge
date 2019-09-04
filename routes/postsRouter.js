@@ -48,17 +48,12 @@ exports.router.get('/', function (req, res) { return __awaiter(void 0, void 0, v
                 return [4 /*yield*/, db.find()];
             case 1:
                 response = _a.sent();
-                if (response !== undefined) {
-                    res.status(200).json(response);
-                }
-                else {
-                    res.status(404).send('no posts found');
-                }
-                return [3 /*break*/, 3];
+                return [2 /*return*/, (response !== undefined)
+                        ? res.status(200).json(response)
+                        : res.status(404).send('no posts found')];
             case 2:
                 error_1 = _a.sent();
-                res.status(500).send('error getting posts');
-                return [3 /*break*/, 3];
+                return [2 /*return*/, res.status(500).send('error getting posts')];
             case 3: return [2 /*return*/];
         }
     });
@@ -70,8 +65,7 @@ exports.router.post('/', function (req, res) { return __awaiter(void 0, void 0, 
             case 0:
                 _a = req.body, title = _a.title, contents = _a.contents;
                 if (title === undefined || contents === undefined) {
-                    res.status(400).send('must provide title and contents');
-                    return [2 /*return*/];
+                    return [2 /*return*/, res.status(400).send('must provide title and contents')];
                 }
                 _b.label = 1;
             case 1:
@@ -79,17 +73,12 @@ exports.router.post('/', function (req, res) { return __awaiter(void 0, void 0, 
                 return [4 /*yield*/, db.insert({ title: title, contents: contents })];
             case 2:
                 response = _b.sent();
-                if (response !== undefined) {
-                    res.status(200).json(response);
-                }
-                else {
-                    res.status(500).send('no id generated while adding post');
-                }
-                return [3 /*break*/, 4];
+                return [2 /*return*/, (response !== undefined)
+                        ? res.status(200).json(response)
+                        : res.status(500).send('no id generated while adding post')];
             case 3:
                 error_2 = _b.sent();
-                res.status(500).send('error adding post');
-                return [3 /*break*/, 4];
+                return [2 /*return*/, res.status(500).send('error adding post')];
             case 4: return [2 /*return*/];
         }
     });
@@ -105,18 +94,13 @@ exports.router.get('/:id', function (req, res) { return __awaiter(void 0, void 0
                 _a.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, db.findById(id)];
             case 2:
-                response = _a.sent();
-                if (response !== undefined && response.length > 0) {
-                    res.status(200).json(response);
-                }
-                else {
-                    res.status(404).end();
-                }
-                return [3 /*break*/, 4];
+                response = (_a.sent())[0];
+                return [2 /*return*/, (response !== undefined)
+                        ? res.status(200).json(response)
+                        : res.status(404).send("no posts with the id " + id)];
             case 3:
                 error_3 = _a.sent();
-                res.status(500).end();
-                return [3 /*break*/, 4];
+                return [2 /*return*/, res.status(500).end('error getting post')];
             case 4: return [2 /*return*/];
         }
     });
@@ -130,12 +114,11 @@ exports.router.put('/:id', function (req, res) { return __awaiter(void 0, void 0
                 _a = req.body, title = _a.title, contents = _a.contents;
                 task = 'updating post';
                 if (title === undefined && contents === undefined) {
-                    res.status(400).send('must provide title or contents');
-                    return [2 /*return*/];
+                    return [2 /*return*/, res.status(400).send('must provide title or contents')];
                 }
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 6, , 7]);
+                _b.trys.push([1, 5, , 6]);
                 return [4 /*yield*/, db.update(id, { title: title, contents: contents })];
             case 2:
                 putResponse = _b.sent();
@@ -143,58 +126,42 @@ exports.router.put('/:id', function (req, res) { return __awaiter(void 0, void 0
                 task = 'getting updated post';
                 return [4 /*yield*/, db.findById(id)];
             case 3:
-                getResponse = _b.sent();
-                if (getResponse !== undefined && getResponse.length > 0) {
-                    res.status(200).json(getResponse);
-                }
-                else {
-                    res.status(500).send('unable to get updated post');
-                }
-                return [3 /*break*/, 5];
-            case 4:
-                res.status(500).send('no id generated while adding post');
-                _b.label = 5;
-            case 5: return [3 /*break*/, 7];
-            case 6:
+                getResponse = (_b.sent())[0];
+                return [2 /*return*/, (getResponse !== undefined)
+                        ? res.status(200).json(getResponse)
+                        : res.status(500).send('unable to get updated post')];
+            case 4: return [2 /*return*/, res.status(500).send('no id generated while adding post')];
+            case 5:
                 error_4 = _b.sent();
-                res.status(500).send("error " + task);
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+                return [2 /*return*/, res.status(500).send("error " + task)];
+            case 6: return [2 /*return*/];
         }
     });
 }); });
 exports.router.delete('/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, posts, deletedPostsCount, error_5;
+    var id, post, deletedPostsCount, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = req.params.id;
                 _a.label = 1;
             case 1:
-                _a.trys.push([1, 6, , 7]);
+                _a.trys.push([1, 5, , 6]);
                 return [4 /*yield*/, db.findById(id)];
             case 2:
-                posts = _a.sent();
-                if (!(posts !== undefined && posts.length > 0)) return [3 /*break*/, 4];
+                post = (_a.sent())[0];
+                if (!(post !== undefined)) return [3 /*break*/, 4];
                 return [4 /*yield*/, db.remove(id)];
             case 3:
                 deletedPostsCount = _a.sent();
-                if (posts.length === deletedPostsCount) {
-                    res.status(200).json(posts);
-                }
-                else {
-                    res.status(500).send("error deleting posts with id " + id);
-                }
-                return [3 /*break*/, 5];
-            case 4:
-                res.status(404).send("no posts found with id " + id);
-                _a.label = 5;
-            case 5: return [3 /*break*/, 7];
-            case 6:
+                return [2 /*return*/, (deletedPostsCount === 1)
+                        ? res.status(200).json(post)
+                        : res.status(500).send("error deleting posts with id " + id)];
+            case 4: return [2 /*return*/, res.status(404).send("no posts found with id " + id)];
+            case 5:
                 error_5 = _a.sent();
-                res.status(500).send("error deleting posts with id " + id);
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
+                return [2 /*return*/, res.status(500).send("error deleting posts with id " + id)];
+            case 6: return [2 /*return*/];
         }
     });
 }); });
@@ -210,17 +177,12 @@ exports.router.get('/:id/comments', function (req, res) { return __awaiter(void 
                 return [4 /*yield*/, db.findPostComments(id)];
             case 2:
                 response = _a.sent();
-                if (response !== undefined && response.length > 0) {
-                    res.status(200).json(response);
-                }
-                else {
-                    res.status(404).send("no comments on post " + id);
-                }
-                return [3 /*break*/, 4];
+                return [2 /*return*/, (response !== undefined && response.length > 0)
+                        ? res.status(200).json(response)
+                        : res.status(404).send("no comments on post " + id)];
             case 3:
                 error_6 = _a.sent();
-                res.status(500).send('error getting comments');
-                return [3 /*break*/, 4];
+                return [2 /*return*/, res.status(500).send('error getting comments')];
             case 4: return [2 /*return*/];
         }
     });
@@ -233,8 +195,7 @@ exports.router.post('/:id/comments', function (req, res) { return __awaiter(void
                 id = req.params.id;
                 text = req.body.text;
                 if (text === undefined) {
-                    res.status(400).send('must provide comment');
-                    return [2 /*return*/];
+                    return [2 /*return*/, res.status(400).send('must provide comment')];
                 }
                 comment = {
                     post_id: id,
@@ -246,20 +207,14 @@ exports.router.post('/:id/comments', function (req, res) { return __awaiter(void
                 return [4 /*yield*/, db.insertComment(comment)];
             case 2:
                 response = _a.sent();
-                if (response !== undefined) {
-                    res.status(200).json(response);
-                }
-                else {
-                    res.status(500).send("error adding comment to id " + id);
-                }
-                return [3 /*break*/, 4];
+                return [2 /*return*/, (response !== undefined)
+                        ? res.status(200).json(response)
+                        : res.status(500).send("error adding comment to id " + id)];
             case 3:
                 error_7 = _a.sent();
-                res.status(500).send("error adding comment to id " + id);
-                return [3 /*break*/, 4];
+                return [2 /*return*/, res.status(500).send("error adding comment to id " + id)];
             case 4: return [2 /*return*/];
         }
     });
 }); });
-// module.exports = router;
 exports.default = exports.router;
