@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var cors = require("cors");
+var routes_1 = require("./routes");
+var server = express();
+server.use(express.json());
+server.use(cors());
+server.use('/api/posts', routes_1.postsRouter);
+server.listen(5000, function () { return console.log('listening on port 5000'); });
